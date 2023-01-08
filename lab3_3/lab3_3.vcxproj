@@ -133,6 +133,7 @@
     <ClInclude Include="ArraySequence.h" />
     <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Graph.h" />
+    <ClInclude Include="GraphFunctions.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedListSequence.h" />
     <ClInclude Include="Sequence.h" />
