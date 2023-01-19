@@ -1,64 +1,74 @@
 #pragma once
 #include <iostream>
-#include <string.h>
-#include "Sequence.h"
+#include <vector>
+#include <map>
 
 using namespace std;
 
-//add set?
-//id - static int
+class Edge;
 
-template <typename TData, typename TElements> class Node {
+class Node {
 public:
-	Node(Sequence<Edge<TData, TElements>> *new_edges, TData value, int new_id) {
-		data = value;
+	Node(vector<Edge> new_edges, int new_id) {
 		id = new_id;
 		edges = new_edges;
 	}
 
-	Sequence<Edge<TData, TElements>>* get_edges() {
-		return this->edges;
-	}
+	Node() {}
 
-	TData get_data() {
-		return data;
+	vector<Edge>* get_edges() {
+		return &(this->edges);
 	}
 
 	int get_id() {
 		return this->id;
 	}
 
-	bool operator==(Node<TData, TElements>* node) {
+	void set_id(int new_id) {
+		id = new_id;
+	}
+
+	bool operator==(Node* node) {
 		return this->id == node->id;
 	}
 
-	bool operator!=(Node<TData, TElements>* node) {
+	bool operator!=(Node* node) {
 		return this->id != node->id;
 	}
 private:
-	Sequence<Edge<TData, TElements>>* edges;
-	TData data;
-	int id;
+	vector<Edge> edges; // from
+	int id = -1;
 };
 
-template <typename TData, typename TElements> class Edge {
+class Edge {
 public:
-	Edge(Node<TData, TElements>* start_node, Node<TData, TElements>* end_node, TElements data, int new_id) {
+	Edge() {
+		//start = new Node();
+		//end = new Node();
+	}
+
+	Edge(Node* start_node, Node* end_node, int data, int new_id) {
 		start = start_node;
 		end = end_node;
 		value = data;
 		id = new_id;
 	}
 
-	Node<TData, TElements>* get_start() {
+	Edge(Node* start_node, Node* end_node, int data) {
+		start = start_node;
+		end = end_node;
+		value = data;
+	}
+
+	Node* get_start() {
 		return this->start;
 	}
 
-	Node<TData, TElements>* get_end() {
+	Node* get_end() {
 		return this->end;
 	}
 
-	TElements get_value() {
+	int get_value() {
 		return this->value;
 	}
 
@@ -66,45 +76,77 @@ public:
 		return this->id;
 	}
 
-	bool IsIncidentTo(Edge<TData, TElements>* edge) const
+	void set_id(int new_id) {
+		id = new_id;
+	}
+
+	bool IsIncidentTo(Edge* edge) const
 	{
 		return this->end == edge->start || edge->end == this->start;
 	}
 
 private:
-	Node<TData, TElements>* start;
-	Node<TData, TElements>* end;
-	TElements value;
-	int id;
+	Node* start;
+	Node* end;
+	int value = -1;
+	int id = -1;
 };
 
-template <typename TData, typename TElements> class Graph {
+class Graph {
 public:
-	Graph() {
-		nodes = new Sequence<Node<TData, TElements>>;
+	Graph() {}
+
+	void add_node(Node *vertex) {
+		int num = id_const();
+		vertex->set_id(num);
+		nodes.push_back(*vertex);
 	}
 
-	Graph(Sequence<Node<TData, TElements>> seq) {
-		nodes = seq;
+	void add_edge(Edge *new_edge) {
+		int num = id_const();
+		new_edge->set_id(num);
+		edges[num] = *new_edge;
 	}
 
-	void Add(Node<TData, TElements> vertex) {
-		nodes->Append(vertex);
+	vector<Node> get_nodes() {
+		return nodes;
 	}
 
-	void Remove(Node<TData, TElements> vertex) {
-		//nodes->Append(vertex);
+	vector<Edge> get_edges() {
+		return edges;
 	}
 
-	//ReadonlySequence<TNode>* GetNodes() const = 0;
-	//ReadonlySequence<TEdge>* GetEdges() const = 0;
+	Node get_node(int id_node) {
+		//assert
+		for (int i = 0; i < nodes.size(); ++i) {
+			if (nodes[i].get_id() == id_node) {
+				return nodes[i];
+			}
+		}
+	}
+
+	Edge get_edge(int id_edge) {
+		//assert
+		for (int i = 0; i < edges.size(); ++i) {
+			if (edges[i].get_id() == id_edge) {
+				return edges[i];
+			}
+		}
+	} 
+
 	//ReadonlySequence<TEdge>* GetInboundEdges(TNode node) const = 0;
 	//ReadonlySequence<TEdge>* GetOutboundEdges(TNode node) const = 0;
-	//IOrientedGraph<TIdentifier, TNode, TEdge>* Add(TNode node) = 0;
 	//IOrientedGraph<TIdentifier, TNode, TEdge>* Remove(TNode node) = 0;
-	//IOrientedGraph<TIdentifier, TNode, TEdge>* Add(TEdge edge) = 0;
 	//IOrientedGraph<TIdentifier, TNode, TEdge>* Remove(TEdge edge) = 0;
 
 private:
-	Sequence<Node<TData, TElements>> *nodes;
+	vector<Node> nodes;
+	vector<Edge> edges;
+	//map<int, Node> nodes;
+	//map<int, Edge> edges;
+
+	int id_const() {
+		static int a = 1;
+		return a++;
+	}
 };

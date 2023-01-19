@@ -24,6 +24,7 @@ public:
 	//---------Создание объекта-------------
 	Sequence() {}
 	Sequence(T* items, int count) {}
+	Sequence<T>& operator=(const Sequence<T>& other) {}
 
 	//------------Декомпозиция--------------
 	//Получить первый элемент в списке

@@ -22,6 +22,15 @@ public:
 			this->Append(list.Get(i));
 		}
 	}
+
+	LinkedListSequence<T>& operator=(const LinkedListSequence<T>& other) {
+		if (this == &other) {
+			return *this;
+		}
+		inner_list = new LinkedList<T>(*other.inner_list);
+		return *this;
+	}
+
 	//------------Декомпозиция--------------
 	//Получить первый элемент в списке
 	T GetFirst() {
