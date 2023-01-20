@@ -21,7 +21,6 @@ int main() {
 	g.add_edge(&u3);
 	g.add_edge(&u4);
 	g.add_edge(&u5);
-	cout << "sanlc" << endl;
 	g.get_node(v1.get_id())->get_edges()->push_back(u1);
 	g.get_node(v1.get_id())->get_edges()->push_back(u2);
 	g.get_node(v2.get_id())->get_edges()->push_back(u3);
@@ -32,14 +31,16 @@ int main() {
 	//cout << "fevuwycb " << g.get_node(v1.get_id())->get_edges()->size() << endl;
 	cout << "vbibn " << path.size() << endl;
 	for (int i = 0; i < path.size(); ++i) {
-		cout << path[i] << endl;
+		cout << path[i] << " ";
 	}
+	cout << endl;
 	cout << "cbkdn" << endl;
 	vector<int> path2 = Dijkstra(g, v1.get_id(), v4.get_id());
 	cout << "rbek " << path2.size() << endl;
 	for (int i = 0; i < path2.size(); ++i) {
-		cout << path2[i] << endl;
+		cout << path2[i] << " " ;
 	}
+	cout << endl;
 	cout << "dsvsdc" << endl;
 	//for (int i = 0; i < g.get_list_nodes()->size(); ++i) {
 	//	cout << (*g.get_list_nodes())[i].get_id() << endl;
@@ -49,6 +50,10 @@ int main() {
 	//	std::cout << it->first << "\n";
 	//}
 
-	topologicalSort(g);
+	vector<int> t_order = topological_sort(g);
+	for (int i = 0; i < t_order.size(); ++i) {
+		cout << t_order[i] << " ";
+	}
+	cout << endl;
 	return 0;
 }

@@ -53,79 +53,40 @@ vector<int> Dijkstra(Graph graph, int id_start, int id_end) {
 }
 
 //Топологическое упорядочение
-
-//class Graph
-//{
-//    int V;	// Количество вершин
-//
-//    //  Указатель на массив, содержащий список смежности
-//    list<int>* adj;
-//
-//    // Функция, используемая topologicalSort
-//    void topologicalSortUtil(int v, bool visited[], stack<int>& Stack);
-//public:
-//    Graph(int V);   // Конструктор
-//
-//    // Функция для добавления ребра в граф
-//    void addEdge(int v, int w);
-//
-//    // Выводит топологическую сортировку графа
-//    void topologicalSort();
-//};
-//
-//Graph::Graph(int V)
-//{
-//    this->V = V;
-//    adj = new list<int>[V];
-//}
-//
-//void Graph::addEdge(int v, int w)
-//{
-//    adj[v].push_back(w); // Add w to v’s list.
-//}
-
-void topologicalSortUtil(Graph graph, int id, map<int, bool>* visited, stack<int>* stack)
+void topological_sort_help(Graph graph, int id, map<int, bool>* visited, stack<int>* stack)
 {
-    // Помечаем текущий узел как посещенный
     (*visited)[id] = true;
 
-    // Рекурсивно вызываем функцию для всех смежных вершин
     for (int i = 0; i < graph.get_node(id)->get_edges()->size(); ++i) {
         int tmp_id = (*graph.get_node(id)->get_edges())[i].get_end()->get_id();
         if ((*visited)[tmp_id] == false) {
-            topologicalSortUtil(graph, tmp_id, visited, stack);
+            topological_sort_help(graph, tmp_id, visited, stack);
         }
     }
 
-    // Добавляем текущую вершину в стек с результатом
     stack->push(id);
 }
 
-// Функция для поиска топологической сортировки. 
-// Рекурсивно использует topologicalSortUtil()
-void topologicalSort(Graph graph) {
+vector<int> topological_sort(Graph graph) {
     stack<int> stack;
 
-    // Помечаем все вершины как непосещенные
     int size = graph.get_list_nodes()->size();
     map<int, bool>* visited = new map<int, bool>();
     for (int i = 0; i < graph.get_list_nodes()->size(); ++i) {
         (*visited)[(*graph.get_list_nodes())[i].get_id()] = false;
     }
 
-    // Вызываем рекурсивную вспомогательную функцию 
-    // для поиска топологической сортировки для каждой вершины
     for (int i = 0; i < size; i++) {
         if ((*visited)[i] == false) {
-            topologicalSortUtil(graph, (*graph.get_list_nodes())[i].get_id(), visited, &stack);
+            topological_sort_help(graph, (*graph.get_list_nodes())[i].get_id(), visited, &stack);
         }
     }
 
-    // Выводим содержимое стека
-    while (stack.empty() == false)
-    {
-        cout << stack.top() << " ";
+    vector<int> t_order;
+    while (stack.empty() == false) {
+        t_order.push_back(stack.top());
         stack.pop();
     }
+    return t_order;
 }
 

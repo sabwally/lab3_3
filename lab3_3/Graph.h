@@ -93,6 +93,14 @@ public:
 	bool operator!=(Edge *edge) {
 		return this->id != edge->id;
 	}
+
+	bool operator==(Edge edge) {
+		return this->id == edge.id;
+	}
+
+	bool operator!=(Edge edge) {
+		return this->id != edge.id;
+	}
 private:
 	Node* start;
 	Node* end;
