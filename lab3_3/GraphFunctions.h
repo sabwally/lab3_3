@@ -55,16 +55,19 @@ vector<int> Dijkstra(Graph graph, int id_start, int id_end) {
 //Топологическое упорядочение
 void topological_sort_help(Graph graph, int id, map<int, bool>* visited, stack<int>* stack)
 {
-    (*visited)[id] = true;
+    if ((*visited)[id] == false)
+    {
+        (*visited)[id] = true;
 
-    for (int i = 0; i < graph.get_node(id)->get_edges()->size(); ++i) {
-        int tmp_id = (*graph.get_node(id)->get_edges())[i].get_end()->get_id();
-        if ((*visited)[tmp_id] == false) {
-            topological_sort_help(graph, tmp_id, visited, stack);
+        for (int i = 0; i < graph.get_node(id)->get_edges()->size(); ++i) {
+            int tmp_id = (*graph.get_node(id)->get_edges())[i].get_end()->get_id();
+            if ((*visited)[tmp_id] == false) {
+                topological_sort_help(graph, tmp_id, visited, stack);
+            }
         }
-    }
 
-    stack->push(id);
+        stack->push(id);
+    }
 }
 
 vector<int> topological_sort(Graph graph) {

@@ -15,9 +15,14 @@ public:
 		edges = new_edges;
 	}
 
-	Node() {}
+	Node() {
+		//edges.reserve(1);
+	}
 
 	vector<Edge>* get_edges() {
+		if (this->edges.empty()) {
+			edges.reserve(1);
+		}
 		return &(this->edges);
 	}
 
@@ -110,7 +115,9 @@ private:
 
 class Graph {
 public:
-	Graph() {}
+	Graph() {
+		//nodes.reserve(1);
+	}
 
 	void add_node(Node *vertex) {
 		int num = id_const();
@@ -145,24 +152,6 @@ public:
 		assert(edges.count(id_edge) == 1);
 		return &edges[id_edge];
 	}
-
-	//void remove_edge(int id_edge) {
-	//	auto v = this->get_edge(id_edge);
-	//	auto u = v->get_start();
-	//	auto buff_edges = u->get_edges();
-	//	int i_v;
-	//	for (int i = 0; i < buff_edges->size(); ++i) {
-	//		if ((*buff_edges)[i] == v) {
-	//			i_v = i;
-	//		}
-	//	}
-	//	u->get_edges()->erase(i_v);
-	//	edges.erase(id_edge);
-	//}
-
-	//void remove_node(int id_node) {
-
-	//}
 
 private:
 	vector<Node> nodes;
