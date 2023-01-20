@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <cassert>
 
 using namespace std;
 
@@ -43,8 +44,8 @@ private:
 class Edge {
 public:
 	Edge() {
-		//start = new Node();
-		//end = new Node();
+		start = new Node();
+		end = new Node();
 	}
 
 	Edge(Node* start_node, Node* end_node, int data, int new_id) {
@@ -85,6 +86,13 @@ public:
 		return this->end == edge->start || edge->end == this->start;
 	}
 
+	bool operator==(Edge *edge) {
+		return this->id == edge->id;
+	}
+
+	bool operator!=(Edge *edge) {
+		return this->id != edge->id;
+	}
 private:
 	Node* start;
 	Node* end;
@@ -108,42 +116,50 @@ public:
 		edges[num] = *new_edge;
 	}
 
-	vector<Node> get_nodes() {
-		return nodes;
+	vector<Node>* get_list_nodes() {
+		return &nodes;
 	}
 
-	vector<Edge> get_edges() {
-		return edges;
+	map<int, Edge>* get_list_edges() {
+		return &edges;
 	}
 
-	Node get_node(int id_node) {
-		//assert
+	Node* get_node(int id_node) {
+		assert(count(nodes.begin(), nodes.end(), id_node));
 		for (int i = 0; i < nodes.size(); ++i) {
 			if (nodes[i].get_id() == id_node) {
-				return nodes[i];
+				return &(nodes[i]);
 			}
 		}
 	}
 
-	Edge get_edge(int id_edge) {
-		//assert
-		for (int i = 0; i < edges.size(); ++i) {
-			if (edges[i].get_id() == id_edge) {
-				return edges[i];
-			}
-		}
-	} 
+	Edge* get_edge(int id_edge) {
+		assert(edges.count(id_edge) == 1);
+		return &edges[id_edge];
+	}
 
-	//ReadonlySequence<TEdge>* GetInboundEdges(TNode node) const = 0;
-	//ReadonlySequence<TEdge>* GetOutboundEdges(TNode node) const = 0;
-	//IOrientedGraph<TIdentifier, TNode, TEdge>* Remove(TNode node) = 0;
-	//IOrientedGraph<TIdentifier, TNode, TEdge>* Remove(TEdge edge) = 0;
+	//void remove_edge(int id_edge) {
+	//	auto v = this->get_edge(id_edge);
+	//	auto u = v->get_start();
+	//	auto buff_edges = u->get_edges();
+	//	int i_v;
+	//	for (int i = 0; i < buff_edges->size(); ++i) {
+	//		if ((*buff_edges)[i] == v) {
+	//			i_v = i;
+	//		}
+	//	}
+	//	u->get_edges()->erase(i_v);
+	//	edges.erase(id_edge);
+	//}
+
+	//void remove_node(int id_node) {
+
+	//}
 
 private:
 	vector<Node> nodes;
-	vector<Edge> edges;
 	//map<int, Node> nodes;
-	//map<int, Edge> edges;
+	map<int, Edge> edges;
 
 	int id_const() {
 		static int a = 1;

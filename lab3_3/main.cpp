@@ -5,27 +5,42 @@ using namespace std;
 
 int main() {
 
-	Node v1, v2, v3;
-	Edge u1(&v1, &v2, 10);
-	Edge u2(&v1, &v3, 100);
+	Node v1, v2, v3, v4;
 	Graph g;
-	g.add_edge(&u1);
-	g.add_edge(&u2);
-	v1.get_edges()->push_back(u1);
-	v1.get_edges()->push_back(u2);
 	g.add_node(&v1);
 	g.add_node(&v2);
 	g.add_node(&v3);
-
-	//vector<int> path = Dijkstra(g, v1.get_id(), v2.get_id());
-
-	for (int i = 0; i < g.get_nodes().size(); ++i) {
-		cout << g.get_nodes()[i].get_id() << endl;
-	}
-
-	/*for (int i = 0; i < path.size(); ++i) {
+	g.add_node(&v4);
+	Edge u1(g.get_node(v1.get_id()), g.get_node(v2.get_id()), 10);
+	Edge u2(g.get_node(v1.get_id()), g.get_node(v3.get_id()), 100);
+	Edge u3(g.get_node(v2.get_id()), g.get_node(v4.get_id()), 9);
+	Edge u4(g.get_node(v3.get_id()), g.get_node(v4.get_id()), 40);
+	g.add_edge(&u1);
+	g.add_edge(&u2);
+	g.add_edge(&u3);
+	g.add_edge(&u4);
+	cout << "sanlc" << endl;
+	g.get_node(v1.get_id())->get_edges()->push_back(u1);
+	g.get_node(v1.get_id())->get_edges()->push_back(u2);
+	g.get_node(v2.get_id())->get_edges()->push_back(u3);
+	//g.get_node(v3.get_id())->get_edges()->push_back(u4);
+	
+	vector<int> path = Dijkstra(g, v1.get_id(), v2.get_id());
+	//cout << "fevuwycb " << g.get_node(v1.get_id())->get_edges()->size() << endl;
+	cout << "vbibn " << path.size() << endl;
+	for (int i = 0; i < path.size(); ++i) {
 		cout << path[i] << endl;
-	}*/
+	}
+	cout << "cbkdn" << endl;
 
+	//for (int i = 0; i < g.get_list_nodes()->size(); ++i) {
+	//	cout << (*g.get_list_nodes())[i].get_id() << endl;
+	//}
+
+	//for (auto it = g.get_list_edges()->cbegin(); it != g.get_list_edges()->cend(); ++it) {
+	//	std::cout << it->first << "\n";
+	//}
+
+	topologicalSort(g);
 	return 0;
 }
